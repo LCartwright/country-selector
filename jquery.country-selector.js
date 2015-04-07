@@ -339,7 +339,7 @@ THE SOFTWARE.
         }
       });
       // force refresh value of select field when form is submitted
-      context.$text_field.parents('form:first').submit(function(){
+      context.$text_field.parents('form').first().submit(function(){
         update_select_value();
       });
       // select current value
