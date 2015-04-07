@@ -206,39 +206,35 @@ THE SOFTWARE.
   var public_methods = {
     init: function( customizations ) {
 
-      if ( /msie/.test(navigator.userAgent.toLowerCase()) && parseInt(navigator.appVersion,10) <= 6) {
-
+      if ( /msie/.test(navigator.userAgent.toLowerCase()) && parseInt(navigator.appVersion,10) <= 6)
         return this;
 
-      } else {
+      // Extend defaults
+      var settings = $.extend({}, defaults, customizations );
 
-        // Extend defaults
-        var settings = $.extend({}, defaults, customizations );
+      // Apply to each element
+      return this.each(function(){
 
-        // Apply to each element
-        return this.each(function(){
-          var $select_field = $(this);
+        var $select_field = $(this), context;
 
-          // Set up the context
-          var context = {
-            '$select_field': $select_field,
-            'settings': settings
-          };
+        // Set up the context
+        context = {
+          '$select_field': $select_field,
+          'settings': settings
+        };
 
-          // Extract options, add text field, and hide select field
-          settings.extract_options( context );
-          settings.insert_text_field( context );
-          settings.handle_select_field( context );
+        // Extract options, add text field, and hide select field
+        settings.extract_options( context );
+        settings.insert_text_field( context );
+        settings.handle_select_field( context );
 
-          // Apply autocomplete-plugin
-          if ( typeof settings['autocomplete-plugin'] === 'string' ) {
-            adapters[settings['autocomplete-plugin']]( context );
-          } else {
-            settings['autocomplete-plugin']( context );
-          }
-        });
+        // Apply autocomplete-plugin
+        if ( typeof settings['autocomplete-plugin'] === 'string' )
+          adapters[settings['autocomplete-plugin']]( context );
+        else
+          settings['autocomplete-plugin']( context );
 
-      }
+      });
 
     }
   };
