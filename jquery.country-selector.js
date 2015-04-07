@@ -195,8 +195,7 @@ THE SOFTWARE.
 
     init: function( customizations ) {
 
-      if ( /msie/.test(navigator.userAgent.toLowerCase()) && parseInt(navigator.appVersion,10) <= 6)
-        return this;
+      if (/MSIE [1-6][\.,]/i.test(navigator.userAgent)) return this;
 
       // Extend defaults
       var settings = $.extend({}, defaults, customizations );
