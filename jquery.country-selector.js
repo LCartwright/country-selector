@@ -61,11 +61,8 @@ THE SOFTWARE.
     */
 
     defaults.handle_invalid_input = function( context ) {
-      var selected_finder = 'option:selected:first';
-      if ( context.settings['remove-valueless-options'] ) {
-        selected_finder = 'option:selected[value!=""]:first';
-      }
-      context.$text_field.val( context.$select_field.find( selected_finder ).text() );
+      var sel = 'option:selected' + (context.settings['remove-valueless-options'] ? '[value!=""]' : '');
+      return context.$text_field.val(context.$select_field.find(sel).first().text());
     };
 
 
