@@ -183,8 +183,8 @@ THE SOFTWARE.
 
       // return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
       return options;
-    }
-  };
+
+    };
 
 
 
