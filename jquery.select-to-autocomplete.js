@@ -75,8 +75,8 @@ THE SOFTWARE.
 
     */
 
-    handle_select_field: function( $select_field ) {
-      return $select_field.hide();
+    handle_select_field: function( context ) {
+      return context.$select_field.hide();
     },
 
 
@@ -218,7 +218,7 @@ THE SOFTWARE.
 
           context['$text_field'] = settings['insert_text_field']( context );
 
-          settings['handle_select_field']( $select_field );
+          settings['handle_select_field']( context );
 
           if ( typeof settings['autocomplete-plugin'] === 'string' ) {
             adapters[settings['autocomplete-plugin']]( context );
