@@ -89,7 +89,7 @@ THE SOFTWARE.
     */
 
     insert_text_field: function( context ) {
-      var $text_field = $( '<input type="text"></input>' );
+      var $text_field = context.$text_field = $( '<input type="text"></input>' );
       if ( settings['copy-attributes-to-text-field'] ) {
         var attrs = {};
         var raw_attrs = context.$select_field[0].attributes;
@@ -216,8 +216,8 @@ THE SOFTWARE.
             'settings': settings
           };
 
-          context['$text_field'] = settings['insert_text_field']( context );
 
+          settings['insert_text_field']( context );
           settings['handle_select_field']( context );
 
           if ( typeof settings['autocomplete-plugin'] === 'string' ) {
