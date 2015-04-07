@@ -114,12 +114,9 @@ THE SOFTWARE.
              this.select();
             });
       }
-      var selected_finder = 'option:selected:first';
-      if ( context.settings['remove-valueless-options'] ) {
-        selected_finder = 'option:selected[value!=""]:first';
-      }
-      return $text_field.val( context.$select_field.find( selected_finder ).text() )
-        .insertAfter( context.$select_field );
+
+      context.settings.handle_invalid_input(context).insertAfter( context.$select_field );
+
     };
 
 
