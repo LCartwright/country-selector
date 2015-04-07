@@ -136,18 +136,18 @@ THE SOFTWARE.
   */
 
   defaults.extract_options = function( context ) {
-    var options = [];
-    var $options = context.$select_field.find('option');
-    var number_of_options = $options.length;
-    var settings = context.settings;
+
+    var options = [],
+        $options = context.$select_field.find('option'),
+        number_of_options = $options.length,
+        settings = context.settings;
 
     // Iterate over each option in the select tag
     $options.each(function(){
-      var $option = $(this);
-      var option = {
-        'real-value': $option.attr('value'),
-        'label': $option.text()
-      };
+
+      var $option = $(this),
+          option = { 'real-value': $option.attr('value'), 'label': $option.text() };
+
       if ( settings['remove-valueless-options'] && option['real-value'] === '') {
         // skip options without a value
       } else {
