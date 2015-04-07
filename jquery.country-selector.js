@@ -239,8 +239,9 @@ THE SOFTWARE.
 
   var adapters = {
     jquery_ui: function( context ) {
-      // loose matching of search terms
-      var filter_options = function( term ) {
+
+      // Loose matching of search terms
+      function filter_options( term ) {
         var split_term = term.split(' ');
         var matchers = [];
         for (var i=0; i < split_term.length; i++) {
@@ -285,8 +286,9 @@ THE SOFTWARE.
           return (!term || matchers.length === partial_matches );
         });
       };
+
       // Update the select field value using either selected option or current input in the text field
-      var update_select_value = function( option ) {
+      function update_select_value( option ) {
         if ( option ) {
           if ( context.$select_field.val() !== option['real-value'] ) {
             context.$select_field.val( option['real-value'] );
@@ -313,6 +315,7 @@ THE SOFTWARE.
           }
         }
       };
+
       // jQuery UI autocomplete settings & behavior
       context.$text_field.autocomplete({
         'minLength': context.settings.minLength,
