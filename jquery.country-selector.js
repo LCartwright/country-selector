@@ -1,9 +1,12 @@
 /*
-Version: 1.0.9
+
+  Version: 1.1.0 (FORK)
 
 Documentation: http://baymard.com/labs/country-selector#documentation
 
 Copyright (C) 2011 by Jamie Appleseed, Baymard Institute (baymard.com)
+
+  Edited by Brandon Carl to increase readability, speed, and improve syntax.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +25,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
 */
 
 (function($){
@@ -104,6 +108,8 @@ THE SOFTWARE.
       }
       $text_field.attr( attrs );
     }
+
+    // On blur, ensure that selection is valid.
     $text_field.blur(function() {
       var valid_values = context.$select_field.find('option').map(function(i, option) { return $(option).text(); });
       if ( ($.inArray($text_field.val(), valid_values) < 0) && typeof settings.handle_invalid_input === 'function' ) {
@@ -117,6 +123,7 @@ THE SOFTWARE.
           });
     }
 
+    // Set defaults and append to DOM
     context.settings.handle_invalid_input(context).insertAfter( context.$select_field );
 
   };
@@ -136,7 +143,7 @@ THE SOFTWARE.
     var number_of_options = $options.length;
     var settings = context.settings;
 
-    // go over each option in the select tag
+    // Iterate over each option in the select tag
     $options.each(function(){
       var $option = $(this);
       var option = {
@@ -183,7 +190,7 @@ THE SOFTWARE.
       }
     }
 
-    // return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
+    // Return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
     return options;
 
   };
@@ -287,7 +294,7 @@ THE SOFTWARE.
           return (!term || matchers.length === partial_matches );
         });
       };
-      // update the select field value using either selected option or current input in the text field
+      // Update the select field value using either selected option or current input in the text field
       var update_select_value = function( option ) {
         if ( option ) {
           if ( context.$select_field.val() !== option['real-value'] ) {
@@ -340,11 +347,11 @@ THE SOFTWARE.
           update_select_value( ui.item );
         }
       });
-      // force refresh value of select field when form is submitted
+      // Force refresh value of select field when form is submitted
       context.$text_field.parents('form').first().submit(function(){
         update_select_value();
       });
-      // select current value
+      // Select current value
       update_select_value();
     }
   };
