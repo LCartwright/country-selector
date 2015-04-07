@@ -96,7 +96,7 @@ THE SOFTWARE.
 
   defaults.insert_text_field = function( context ) {
 
-    var $text_field = context.$text_field = $( '<input type="text"></input>' ),
+    var $text_field = context.$text_field = $( '<input type="text" autocomplete="off"></input>' ),
         settings = context.settings;
     if ( settings['copy-attributes-to-text-field'] ) {
       var attrs = {};
