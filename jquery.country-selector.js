@@ -104,12 +104,12 @@ THE SOFTWARE.
     }
     $text_field.blur(function() {
       var valid_values = context.$select_field.find('option').map(function(i, option) { return $(option).text(); });
-      if ( ($.inArray($text_field.val(), valid_values) < 0) && typeof settings['handle_invalid_input'] === 'function' ) {
-        settings['handle_invalid_input'](context);
+      if ( ($.inArray($text_field.val(), valid_values) < 0) && typeof settings.handle_invalid_input === 'function' ) {
+        settings.handle_invalid_input(context);
       }
     });
     // give the input box the ability to select all text on mouse click
-    if ( context.settings['autoselect'] ) {
+    if ( context.settings.autoselect ) {
        $text_field.click( function() {
            this.select();
           });
@@ -145,18 +145,18 @@ THE SOFTWARE.
         // skip options without a value
       } else {
         // prepare the 'matches' string which must be filtered on later
-        option['matches'] = option['label'];
+        option.matches = option.label;
         var alternative_spellings = $option.attr( settings['alternative-spellings-attr'] );
         if ( alternative_spellings ) {
-          option['matches'] += ' ' + alternative_spellings;
+          option.matches += ' ' + alternative_spellings;
         }
         // give each option a weight paramter for sorting
-        if ( settings['sort'] ) {
+        if ( settings.sort ) {
           var weight = parseInt( $option.attr( settings['sort-attr'] ), 10 );
           if ( weight ) {
-            option['weight'] = weight;
+            option.weight = weight;
           } else {
-            option['weight'] = number_of_options;
+            option.weight = number_of_options;
           }
         }
         // add relevancy score
@@ -173,11 +173,11 @@ THE SOFTWARE.
       }
     });
     // sort the options based on weight
-    if ( settings['sort'] ) {
+    if ( settings.sort ) {
       if ( settings['sort-desc'] ) {
-        options.sort( function( a, b ) { return b['weight'] - a['weight']; } );
+        options.sort( function( a, b ) { return b.weight - a.weight; } );
       } else {
-        options.sort( function( a, b ) { return a['weight'] - b['weight']; } );
+        options.sort( function( a, b ) { return a.weight - b.weight; } );
       }
     }
 
@@ -213,9 +213,9 @@ THE SOFTWARE.
             'settings': settings
           };
 
-          settings['extract_options']( context );
-          settings['insert_text_field']( context );
-          settings['handle_select_field']( context );
+          settings.extract_options( context );
+          settings.insert_text_field( context );
+          settings.handle_select_field( context );
 
           if ( typeof settings['autocomplete-plugin'] === 'string' ) {
             adapters[settings['autocomplete-plugin']]( context );
@@ -246,9 +246,9 @@ THE SOFTWARE.
         for (var i=0; i < split_term.length; i++) {
           if ( split_term[i].length > 0 ) {
             var matcher = {};
-            matcher['partial'] = new RegExp( $.ui.autocomplete.escapeRegex( split_term[i] ), "i" );
+            matcher.partial = new RegExp( $.ui.autocomplete.escapeRegex( split_term[i] ), "i" );
             if ( context.settings['relevancy-sorting'] ) {
-              matcher['strict'] = new RegExp( "^" + $.ui.autocomplete.escapeRegex( split_term[i] ), "i" );
+              matcher.strict = new RegExp( "^" + $.ui.autocomplete.escapeRegex( split_term[i] ), "i" );
             }
             matchers.push( matcher );
           }
@@ -261,12 +261,12 @@ THE SOFTWARE.
             var split_option_matches = option.matches.split(' ');
           }
           for ( var i=0; i < matchers.length; i++ ) {
-            if ( matchers[i]['partial'].test( option.matches ) ) {
+            if ( matchers[i].partial.test( option.matches ) ) {
               partial_matches++;
             }
             if ( context.settings['relevancy-sorting'] ) {
               for (var q=0; q < split_option_matches.length; q++) {
-                if ( matchers[i]['strict'].test( split_option_matches[q] ) ) {
+                if ( matchers[i].strict.test( split_option_matches[q] ) ) {
                   strict_match = true;
                   break;
                 }
@@ -296,7 +296,7 @@ THE SOFTWARE.
           var option_name = context.$text_field.val().toLowerCase();
           var matching_option = { 'real-value': false };
           for (var i=0; i < context.options.length; i++) {
-            if ( option_name === context.options[i]['label'].toLowerCase() ) {
+            if ( option_name === context.options[i].label.toLowerCase() ) {
               matching_option = context.options[i];
               break;
             }
@@ -306,24 +306,24 @@ THE SOFTWARE.
             context.$select_field.change();
           }
           if ( matching_option['real-value'] ) {
-            context.$text_field.val( matching_option['label'] );
+            context.$text_field.val( matching_option.label );
           }
-          if ( typeof context.settings['handle_invalid_input'] === 'function' && context.$select_field.val() === '' ) {
-            context.settings['handle_invalid_input']( context );
+          if ( typeof context.settings.handle_invalid_input === 'function' && context.$select_field.val() === '' ) {
+            context.settings.handle_invalid_input( context );
           }
         }
       };
       // jQuery UI autocomplete settings & behavior
       context.$text_field.autocomplete({
-        'minLength': context.settings['minLength'],
-        'delay': context.settings['delay'],
-        'autoFocus': context.settings['autoFocus'],
+        'minLength': context.settings.minLength,
+        'delay': context.settings.delay,
+        'autoFocus': context.settings.autoFocus,
         source: function( request, response ) {
           var filtered_options = filter_options( request.term );
           if ( context.settings['relevancy-sorting'] ) {
             filtered_options = filtered_options.sort( function( a, b ) {
             	if (b['relevancy-score'] == a['relevancy-score']) {
-            		return b['label'] < a['label'] ? 1 : -1;
+            		return b.label < a.label ? 1 : -1;
             	} else {
             		return b['relevancy-score'] - a['relevancy-score'];
             	}
