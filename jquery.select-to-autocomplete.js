@@ -32,7 +32,7 @@ THE SOFTWARE.
 
   */
 
-  var settings = {
+  var defaults = {
     'sort': false,
     'sort-attr': 'data-priority',
     'sort-desc': false,
@@ -48,7 +48,9 @@ THE SOFTWARE.
     'relevancy-sorting-booster-attr': 'data-relevancy-booster',
     'minLength': 0,
 	  'delay': 0,
-    'autoFocus': true,
+    'autoFocus': true
+  };
+
 
     /*
 
@@ -58,13 +60,13 @@ THE SOFTWARE.
 
     */
 
-    handle_invalid_input: function( context ) {
+    defaults.handle_invalid_input = function( context ) {
       var selected_finder = 'option:selected:first';
       if ( context.settings['remove-valueless-options'] ) {
         selected_finder = 'option:selected[value!=""]:first';
       }
       context.$text_field.val( context.$select_field.find( selected_finder ).text() );
-    },
+    };
 
 
     /*
@@ -75,9 +77,9 @@ THE SOFTWARE.
 
     */
 
-    handle_select_field: function( context ) {
+    defaults.handle_select_field = function( context ) {
       return context.$select_field.hide();
-    },
+    };
 
 
     /*
@@ -88,8 +90,9 @@ THE SOFTWARE.
 
     */
 
-    insert_text_field: function( context ) {
-      var $text_field = context.$text_field = $( '<input type="text"></input>' );
+    defaults.insert_text_field = function( context ) {
+      var $text_field = context.$text_field = $( '<input type="text"></input>' ),
+          settings = context.settings;
       if ( settings['copy-attributes-to-text-field'] ) {
         var attrs = {};
         var raw_attrs = context.$select_field[0].attributes;
@@ -120,7 +123,7 @@ THE SOFTWARE.
       }
       return $text_field.val( context.$select_field.find( selected_finder ).text() )
         .insertAfter( context.$select_field );
-    },
+    };
 
 
     /*
@@ -131,10 +134,11 @@ THE SOFTWARE.
 
     */
 
-    extract_options: function( context ) {
+    defaults.extract_options = function( context ) {
       var options = [];
       var $options = context.$select_field.find('option');
       var number_of_options = $options.length;
+      var settings = context.settings;
 
       // go over each option in the select tag
       $options.each(function(){
@@ -205,7 +209,7 @@ THE SOFTWARE.
 
       } else {
 
-        settings = $.extend( settings, customizations );
+        settings = $.extend({}, defaults, customizations );
 
         return this.each(function(){
           var $select_field = $(this);
