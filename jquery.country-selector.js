@@ -151,12 +151,10 @@ THE SOFTWARE.
       if ( settings['remove-valueless-options'] && option['real-value'] === '') {
         // skip options without a value
       } else {
-        // prepare the 'matches' string which must be filtered on later
-        option.matches = option.label;
-        var alternative_spellings = $option.attr( settings['alternative-spellings-attr'] );
-        if ( alternative_spellings ) {
-          option.matches += ' ' + alternative_spellings;
-        }
+
+        // `matches` includes text and alternative spellings
+        option.matches = option.label + ' ' + ($option.attr(settings['alternative-spellings-attr']) || '');
+
         // give each option a weight paramter for sorting
         if ( settings.sort ) {
           var weight = parseInt( $option.attr( settings['sort-attr'] ), 10 );
