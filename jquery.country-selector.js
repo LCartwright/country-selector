@@ -99,7 +99,7 @@ THE SOFTWARE.
         if ( key !== 'name' && key !== 'id' && typeof context.$select_field.attr(key) !== 'undefined' ) {
           attrs[key] = value;
         }
-      };
+      }
       $text_field.attr( attrs );
     }
     $text_field.blur(function() {
@@ -252,7 +252,7 @@ THE SOFTWARE.
             }
             matchers.push( matcher );
           }
-        };
+        }
 
         return $.grep( context.options, function( option ) {
           var partial_matches = 0;
@@ -270,9 +270,9 @@ THE SOFTWARE.
                   strict_match = true;
                   break;
                 }
-              };
+              }
             }
-          };
+          }
           if ( context.settings['relevancy-sorting'] ) {
             var option_score = 0;
             option_score += partial_matches * context.settings['relevancy-sorting-partial-match-value'];
@@ -300,7 +300,7 @@ THE SOFTWARE.
               matching_option = context.options[i];
               break;
             }
-          };
+          }
           if ( context.$select_field.val() !== matching_option['real-value'] ) {
             context.$select_field.val( matching_option['real-value'] || '' );
             context.$select_field.change();
