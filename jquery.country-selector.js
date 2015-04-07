@@ -155,15 +155,10 @@ THE SOFTWARE.
         // `matches` includes text and alternative spellings
         option.matches = option.label + ' ' + ($option.attr(settings['alternative-spellings-attr']) || '');
 
-        // give each option a weight paramter for sorting
-        if ( settings.sort ) {
-          var weight = parseInt( $option.attr( settings['sort-attr'] ), 10 );
-          if ( weight ) {
-            option.weight = weight;
-          } else {
-            option.weight = number_of_options;
-          }
-        }
+        // Give each option a weight parameter for sorting
+        if (settings.sort)
+          option.weight = parseInt($option.attr(settings['sort-attr']), 10) || number_of_options;
+
         // add relevancy score
         if ( settings['relevancy-sorting'] ) {
           option['relevancy-score'] = 0;
