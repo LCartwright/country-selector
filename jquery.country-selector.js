@@ -26,6 +26,8 @@ THE SOFTWARE.
 
 (function($){
 
+  'use strict';
+
   /*
 
     //// Defaults
