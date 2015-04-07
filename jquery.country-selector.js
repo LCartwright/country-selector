@@ -53,7 +53,6 @@ THE SOFTWARE.
     'relevancy-sorting-strict-match-value'  : 5,
     'relevancy-sorting-booster-attr'        : 'data-relevancy-booster',
     'minLength'                             : 0,
-    'maxResults'                            : 5,
     'delay'                                 : 0,
     'autoFocus'                             : true
   };
