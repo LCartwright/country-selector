@@ -159,20 +159,20 @@ THE SOFTWARE.
         if (settings.sort)
           option.weight = parseInt($option.attr(settings['sort-attr']), 10) || number_of_options;
 
-        // add relevancy score
-        if ( settings['relevancy-sorting'] ) {
+        // Add relevancy score
+        if (settings['relevancy-sorting']) {
           option['relevancy-score'] = 0;
-          option['relevancy-score-booster'] = 1;
-          var boost_by = parseFloat( $option.attr( settings['relevancy-sorting-booster-attr'] ) );
-          if ( boost_by ) {
-            option['relevancy-score-booster'] = boost_by;
-          }
+          option['relevancy-score-booster'] = parseFloat($option.attr(settings['relevancy-sorting-booster-attr'])) || 1;
         }
-        // add option to combined array
+
+        // Add option to combined array
         options.push( option );
+
       }
+
     });
-    // sort the options based on weight
+
+    // Sort the options based on weight
     if ( settings.sort ) {
       if ( settings['sort-desc'] ) {
         options.sort( function( a, b ) { return b.weight - a.weight; } );
