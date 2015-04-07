@@ -148,27 +148,24 @@ THE SOFTWARE.
       var $option = $(this),
           option = { 'real-value': $option.attr('value'), 'label': $option.text() };
 
-      if ( settings['remove-valueless-options'] && option['real-value'] === '') {
-        // skip options without a value
-      } else {
+      // Only process options with values
+      if ( settings['remove-valueless-options'] && option['real-value'] === '') return;
 
-        // `matches` includes text and alternative spellings
-        option.matches = option.label + ' ' + ($option.attr(settings['alternative-spellings-attr']) || '');
+      // `matches` includes text and alternative spellings
+      option.matches = option.label + ' ' + ($option.attr(settings['alternative-spellings-attr']) || '');
 
-        // Give each option a weight parameter for sorting
-        if (settings.sort)
-          option.weight = parseInt($option.attr(settings['sort-attr']), 10) || number_of_options;
+      // Give each option a weight parameter for sorting
+      if (settings.sort)
+        option.weight = parseInt($option.attr(settings['sort-attr']), 10) || number_of_options;
 
-        // Add relevancy score
-        if (settings['relevancy-sorting']) {
-          option['relevancy-score'] = 0;
-          option['relevancy-score-booster'] = parseFloat($option.attr(settings['relevancy-sorting-booster-attr'])) || 1;
-        }
-
-        // Add option to combined array
-        options.push( option );
-
+      // Add relevancy score
+      if (settings['relevancy-sorting']) {
+        option['relevancy-score'] = 0;
+        option['relevancy-score-booster'] = parseFloat($option.attr(settings['relevancy-sorting-booster-attr'])) || 1;
       }
+
+      // Add option to combined array
+      options.push( option );
 
     });
 
