@@ -257,15 +257,15 @@ THE SOFTWARE.
                 return true;
               }
             }
-            return false
-          }
+            return false;
+          };
         } catch (exception) {
           re = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
           return function(haystack) {
             return re.test(haystack);
-          }
+          };
         }
-      };
+      }
 
       // Creates strict matches (startsWith)
       function strictMatch(term) {
@@ -284,9 +284,9 @@ THE SOFTWARE.
           re = new RegExp( "^" + $.ui.autocomplete.escapeRegex(term), "i" );
           return function(haystack) {
             return re.test(haystack);
-          }
+          };
         }
-      };
+      }
 
       // Loose matching of search terms
       function filter_options( term ) {
@@ -302,10 +302,10 @@ THE SOFTWARE.
         }
 
         return $.grep( context.options, function( option ) {
-          var partial_matches = 0;
+          var partial_matches = 0, split_option_matches, strict_match;
           if ( context.settings['relevancy-sorting'] ) {
-            var strict_match = false;
-            var split_option_matches = option.matches.split(' ');
+            strict_match = false;
+            split_option_matches = option.matches.split(' ');
           }
           for ( var i=0; i < matchers.length; i++ ) {
             if ( matchers[i].partial( option.matches ) ) {
@@ -331,7 +331,7 @@ THE SOFTWARE.
           }
           return (!term || matchers.length === partial_matches );
         });
-      };
+      }
 
       // Update the select field value using either selected option or current input in the text field
       function update_select_value( option ) {
@@ -360,7 +360,7 @@ THE SOFTWARE.
             context.settings.handle_invalid_input( context );
           }
         }
-      };
+      }
 
       // jQuery UI autocomplete settings & behavior
       context.$text_field.autocomplete({
