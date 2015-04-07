@@ -23,7 +23,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
 (function($){
+
+  /*
+
+    //// Defaults
+
+  */
+
   var settings = {
     'sort': false,
     'sort-attr': 'data-priority',
@@ -41,6 +49,15 @@ THE SOFTWARE.
     'minLength': 0,
 	  'delay': 0,
     'autoFocus': true,
+
+    /*
+
+      function handle_invalid_input
+
+      Falls back to previously selected element if no match is found.
+
+    */
+
     handle_invalid_input: function( context ) {
       var selected_finder = 'option:selected:first';
       if ( context.settings['remove-valueless-options'] ) {
@@ -48,9 +65,29 @@ THE SOFTWARE.
       }
       context.$text_field.val( context.$select_field.find( selected_finder ).text() );
     },
+
+
+    /*
+
+      function handle_select_field
+
+      How to handle existing `select` element. Defaults to hiding.
+
+    */
+
     handle_select_field: function( $select_field ) {
       return $select_field.hide();
     },
+
+
+    /*
+
+      function insert_text_field
+
+      Adds a new element for autocompletion. Defaults to `<input>`.
+
+    */
+
     insert_text_field: function( context ) {
       var $text_field = $( '<input type="text"></input>' );
       if ( settings['copy-attributes-to-text-field'] ) {
@@ -84,11 +121,21 @@ THE SOFTWARE.
       return $text_field.val( context.$select_field.find( selected_finder ).text() )
         .insertAfter( context.$select_field );
     },
+
+
+    /*
+
+      function extract_options
+
+      Indicates how options should be extracted from `select` field.
+
+    */
+
     extract_options: function( $select_field ) {
       var options = [];
       var $options = $select_field.find('option');
       var number_of_options = $options.length;
-      
+
       // go over each option in the select tag
       $options.each(function(){
         var $option = $(this);
@@ -135,26 +182,34 @@ THE SOFTWARE.
           options.sort( function( a, b ) { return a['weight'] - b['weight']; } );
         }
       }
-      
+
       // return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
       return options;
     }
   };
-  
+
+
+
+  /*
+
+    //// Public Methods
+
+  */
+
   var public_methods = {
     init: function( customizations ) {
-      
+
       if ( /msie/.test(navigator.userAgent.toLowerCase()) && parseInt(navigator.appVersion,10) <= 6) {
-        
+
         return this;
-        
+
       } else {
-        
+
         settings = $.extend( settings, customizations );
 
         return this.each(function(){
           var $select_field = $(this);
-          
+
           var context = {
             '$select_field': $select_field,
             'options': settings['extract_options']( $select_field ),
@@ -162,21 +217,29 @@ THE SOFTWARE.
           };
 
           context['$text_field'] = settings['insert_text_field']( context );
-          
+
           settings['handle_select_field']( $select_field );
-          
+
           if ( typeof settings['autocomplete-plugin'] === 'string' ) {
             adapters[settings['autocomplete-plugin']]( context );
           } else {
             settings['autocomplete-plugin']( context );
           }
         });
-        
+
       }
-      
+
     }
   };
-  
+
+
+
+  /*
+
+    //// Adapters
+
+  */
+
   var adapters = {
     jquery_ui: function( context ) {
       // loose matching of search terms
@@ -193,7 +256,7 @@ THE SOFTWARE.
             matchers.push( matcher );
           }
         };
-        
+
         return $.grep( context.options, function( option ) {
           var partial_matches = 0;
           if ( context.settings['relevancy-sorting'] ) {
@@ -261,11 +324,11 @@ THE SOFTWARE.
         source: function( request, response ) {
           var filtered_options = filter_options( request.term );
           if ( context.settings['relevancy-sorting'] ) {
-            filtered_options = filtered_options.sort( function( a, b ) { 
+            filtered_options = filtered_options.sort( function( a, b ) {
             	if (b['relevancy-score'] == a['relevancy-score']) {
-            		return b['label'] < a['label'] ? 1 : -1;	
+            		return b['label'] < a['label'] ? 1 : -1;
             	} else {
-            		return b['relevancy-score'] - a['relevancy-score']; 
+            		return b['relevancy-score'] - a['relevancy-score'];
             	}
             } );
           }
@@ -287,6 +350,13 @@ THE SOFTWARE.
     }
   };
 
+
+  /*
+
+    //// jQuery UI Extension
+
+  */
+
   $.fn.selectToAutocomplete = function( method ) {
     if ( public_methods[method] ) {
       return public_methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
@@ -294,7 +364,7 @@ THE SOFTWARE.
       return public_methods.init.apply( this, arguments );
     } else {
       $.error( 'Method ' +  method + ' does not exist on jQuery.fn.selectToAutocomplete' );
-    }    
+    }
   };
-  
-})(jQuery); 
+
+})(jQuery);
