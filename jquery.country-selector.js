@@ -178,8 +178,8 @@ THE SOFTWARE.
       }
     }
 
-    // Return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
-    return options;
+    // Attach the options, each with the following attributes: real-value, label, matches, weight (optional)
+    context.options = options;
 
   };
 
