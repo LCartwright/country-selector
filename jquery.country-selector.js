@@ -212,20 +212,25 @@ THE SOFTWARE.
 
       } else {
 
+        // Extend defaults
         var settings = $.extend({}, defaults, customizations );
 
+        // Apply to each element
         return this.each(function(){
           var $select_field = $(this);
 
+          // Set up the context
           var context = {
             '$select_field': $select_field,
             'settings': settings
           };
 
+          // Extract options, add text field, and hide select field
           settings.extract_options( context );
           settings.insert_text_field( context );
           settings.handle_select_field( context );
 
+          // Apply autocomplete-plugin
           if ( typeof settings['autocomplete-plugin'] === 'string' ) {
             adapters[settings['autocomplete-plugin']]( context );
           } else {
