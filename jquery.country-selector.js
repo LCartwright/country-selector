@@ -203,7 +203,7 @@ THE SOFTWARE.
 
       } else {
 
-        settings = $.extend({}, defaults, customizations );
+        var settings = $.extend({}, defaults, customizations );
 
         return this.each(function(){
           var $select_field = $(this);
