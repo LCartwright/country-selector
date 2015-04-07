@@ -53,6 +53,8 @@ THE SOFTWARE.
     'relevancy-sorting-strict-match-value'  : 5,
     'relevancy-sorting-booster-attr'        : 'data-relevancy-booster',
     'minLength'                             : 0,
+    'locale'                                : 'en',
+    'intl-sensitivity'                      : 'base',
     'delay'                                 : 0,
     'autoFocus'                             : true
   };
@@ -239,6 +241,53 @@ THE SOFTWARE.
   var adapters = {
     jquery_ui: function( context ) {
 
+      // Creates partial matches, or international when available
+      function partialMatch(term) {
+        var locale = context.settings.locale,
+            sensitivity = context.settings['intl-sensitivity'],
+            collator,
+            re;
+
+        try {
+          collator = Intl.Collator(locale, { sensitivity : sensitivity });
+          return function(haystack) {
+            for (var i = 0; i < 1 + haystack.length - term.length; i++) {
+              var first_part = haystack.slice(i, i + term.length);
+              if (collator.compare(first_part, term) === 0) {
+                return true;
+              }
+            }
+            return false
+          }
+        } catch (exception) {
+          re = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
+          return function(haystack) {
+            return re.test(haystack);
+          }
+        }
+      };
+
+      // Creates strict matches (startsWith)
+      function strictMatch(term) {
+        var locale = context.settings.locale,
+            sensitivity = context.settings['intl-sensitivity'],
+            collator,
+            re;
+
+        try {
+          collator = Intl.Collator(locale, { sensitivity : sensitivity });
+          return function (haystack) {
+            var first_part = haystack.slice(0, term.length);
+            return collator.compare(first_part, term) === 0;
+          };
+        } catch (exception) {
+          re = new RegExp( "^" + $.ui.autocomplete.escapeRegex(term), "i" );
+          return function(haystack) {
+            return re.test(haystack);
+          }
+        }
+      };
+
       // Loose matching of search terms
       function filter_options( term ) {
         var split_term = term.split(' ');
@@ -246,10 +295,8 @@ THE SOFTWARE.
         for (var i=0; i < split_term.length; i++) {
           if ( split_term[i].length > 0 ) {
             var matcher = {};
-            matcher.partial = new RegExp( $.ui.autocomplete.escapeRegex( split_term[i] ), "i" );
-            if ( context.settings['relevancy-sorting'] ) {
-              matcher.strict = new RegExp( "^" + $.ui.autocomplete.escapeRegex( split_term[i] ), "i" );
-            }
+            matcher.partial = partialMatch(split_term[i]);
+            if ( context.settings['relevancy-sorting'] ) matcher.strict = strictMatch(split_term[i]);
             matchers.push( matcher );
           }
         }
@@ -261,12 +308,12 @@ THE SOFTWARE.
             var split_option_matches = option.matches.split(' ');
           }
           for ( var i=0; i < matchers.length; i++ ) {
-            if ( matchers[i].partial.test( option.matches ) ) {
+            if ( matchers[i].partial( option.matches ) ) {
               partial_matches++;
             }
             if ( context.settings['relevancy-sorting'] ) {
               for (var q=0; q < split_option_matches.length; q++) {
-                if ( matchers[i].strict.test( split_option_matches[q] ) ) {
+                if ( matchers[i].strict( split_option_matches[q] ) ) {
                   strict_match = true;
                   break;
                 }
