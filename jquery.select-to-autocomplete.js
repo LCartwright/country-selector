@@ -131,9 +131,9 @@ THE SOFTWARE.
 
     */
 
-    extract_options: function( $select_field ) {
+    extract_options: function( context ) {
       var options = [];
-      var $options = $select_field.find('option');
+      var $options = context.$select_field.find('option');
       var number_of_options = $options.length;
 
       // go over each option in the select tag
@@ -212,11 +212,10 @@ THE SOFTWARE.
 
           var context = {
             '$select_field': $select_field,
-            'options': settings['extract_options']( $select_field ),
             'settings': settings
           };
 
-
+          settings['extract_options']( context );
           settings['insert_text_field']( context );
           settings['handle_select_field']( context );
 
