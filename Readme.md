@@ -1,5 +1,9 @@
-Select To Autocomplete: Redesigned Country Selector
+## Select To Autocomplete: Redesigned Country Selector
 
+This is a fork of Baymard's redesigned country selector. The intent is to make the code more readable, linted, better documented,
+faster and up-to-date.
+
+### About the Country Selector
 An improved way to select a country in web forms.
 
 * Design improves upon a standard country dropdown list.
