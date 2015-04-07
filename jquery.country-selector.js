@@ -192,6 +192,7 @@ THE SOFTWARE.
   */
 
   var public_methods = {
+
     init: function( customizations ) {
 
       if ( /msie/.test(navigator.userAgent.toLowerCase()) && parseInt(navigator.appVersion,10) <= 6)
@@ -225,6 +226,7 @@ THE SOFTWARE.
       });
 
     }
+
   };
 
 
