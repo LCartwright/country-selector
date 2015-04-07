@@ -94,6 +94,7 @@ THE SOFTWARE.
   */
 
   defaults.insert_text_field = function( context ) {
+
     var $text_field = context.$text_field = $( '<input type="text"></input>' ),
         settings = context.settings;
     if ( settings['copy-attributes-to-text-field'] ) {
@@ -116,12 +117,9 @@ THE SOFTWARE.
         settings.handle_invalid_input(context);
       }
     });
-    // give the input box the ability to select all text on mouse click
-    if ( context.settings.autoselect ) {
-       $text_field.click( function() {
-           this.select();
-          });
-    }
+
+    // Give the input box the ability to select all text on mouse click
+    if ( context.settings.autoselect ) $text_field.click(function() { this.select(); });
 
     // Set defaults and append to DOM
     context.settings.handle_invalid_input(context).insertAfter( context.$select_field );
