@@ -140,7 +140,7 @@ THE SOFTWARE.
       var option = {
         'real-value': $option.attr('value'),
         'label': $option.text()
-      }
+      };
       if ( settings['remove-valueless-options'] && option['real-value'] === '') {
         // skip options without a value
       } else {
@@ -284,7 +284,7 @@ THE SOFTWARE.
           }
           return (!term || matchers.length === partial_matches );
         });
-      }
+      };
       // update the select field value using either selected option or current input in the text field
       var update_select_value = function( option ) {
         if ( option ) {
@@ -312,7 +312,7 @@ THE SOFTWARE.
             context.settings['handle_invalid_input']( context );
           }
         }
-      }
+      };
       // jQuery UI autocomplete settings & behavior
       context.$text_field.autocomplete({
         'minLength': context.settings['minLength'],
