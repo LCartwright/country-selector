@@ -53,6 +53,7 @@ THE SOFTWARE.
     'relevancy-sorting-strict-match-value'  : 5,
     'relevancy-sorting-booster-attr'        : 'data-relevancy-booster',
     'minLength'                             : 0,
+    'maxResults'                            : 5,
     'delay'                                 : 0,
     'autoFocus'                             : true
   };
@@ -332,7 +333,7 @@ THE SOFTWARE.
             	}
             } );
           }
-          response( filtered_options );
+          response( filtered_options.slice(0, 1 + (context.settings.maxResults || (filtered_options.length - 1))) );
         },
         select: function( event, ui ) {
           update_select_value( ui.item );
