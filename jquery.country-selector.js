@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 */
 
-(function($){
+(function($) {
 
   'use strict';
 
