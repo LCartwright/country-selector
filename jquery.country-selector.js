@@ -33,158 +33,158 @@ THE SOFTWARE.
   */
 
   var defaults = {
-    'sort': false,
-    'sort-attr': 'data-priority',
-    'sort-desc': false,
-    'autoselect': true,
-    'alternative-spellings': true,
-    'alternative-spellings-attr': 'data-alternative-spellings',
-    'remove-valueless-options': true,
-    'copy-attributes-to-text-field': true,
-    'autocomplete-plugin': 'jquery_ui',
-    'relevancy-sorting': true,
-    'relevancy-sorting-partial-match-value': 1,
-    'relevancy-sorting-strict-match-value': 5,
-    'relevancy-sorting-booster-attr': 'data-relevancy-booster',
-    'minLength': 0,
-	  'delay': 0,
-    'autoFocus': true
+    'sort'                                  : false,
+    'sort-attr'                             : 'data-priority',
+    'sort-desc'                             : false,
+    'autoselect'                            : true,
+    'alternative-spellings'                 : true,
+    'alternative-spellings-attr'            : 'data-alternative-spellings',
+    'remove-valueless-options'              : false,
+    'copy-attributes-to-text-field'         : true,
+    'autocomplete-plugin'                   : 'jquery_ui',
+    'relevancy-sorting'                     : true,
+    'relevancy-sorting-partial-match-value' : 1,
+    'relevancy-sorting-strict-match-value'  : 5,
+    'relevancy-sorting-booster-attr'        : 'data-relevancy-booster',
+    'minLength'                             : 0,
+    'delay'                                 : 0,
+    'autoFocus'                             : true
   };
 
 
-    /*
+  /*
 
-      function handle_invalid_input
+    function handle_invalid_input
 
-      Falls back to previously selected element if no match is found.
+    Falls back to previously selected element if no match is found.
 
-    */
+  */
 
-    defaults.handle_invalid_input = function( context ) {
-      var sel = 'option:selected' + (context.settings['remove-valueless-options'] ? '[value!=""]' : '');
-      return context.$text_field.val(context.$select_field.find(sel).first().text());
-    };
-
-
-    /*
-
-      function handle_select_field
-
-      How to handle existing `select` element. Defaults to hiding.
-
-    */
-
-    defaults.handle_select_field = function( context ) {
-      return context.$select_field.hide();
-    };
+  defaults.handle_invalid_input = function( context ) {
+    var sel = 'option:selected' + (context.settings['remove-valueless-options'] ? '[value!=""]' : '');
+    return context.$text_field.val(context.$select_field.find(sel).first().text());
+  };
 
 
-    /*
+  /*
 
-      function insert_text_field
+    function handle_select_field
 
-      Adds a new element for autocompletion. Defaults to `<input>`.
+    How to handle existing `select` element. Defaults to hiding.
 
-    */
+  */
 
-    defaults.insert_text_field = function( context ) {
-      var $text_field = context.$text_field = $( '<input type="text"></input>' ),
-          settings = context.settings;
-      if ( settings['copy-attributes-to-text-field'] ) {
-        var attrs = {};
-        var raw_attrs = context.$select_field[0].attributes;
-        for (var i=0; i < raw_attrs.length; i++) {
-          var key = raw_attrs[i].nodeName;
-          var value = raw_attrs[i].nodeValue;
-          if ( key !== 'name' && key !== 'id' && typeof context.$select_field.attr(key) !== 'undefined' ) {
-            attrs[key] = value;
-          }
-        };
-        $text_field.attr( attrs );
+  defaults.handle_select_field = function( context ) {
+    return context.$select_field.hide();
+  };
+
+
+  /*
+
+    function insert_text_field
+
+    Adds a new element for autocompletion. Defaults to `<input>`.
+
+  */
+
+  defaults.insert_text_field = function( context ) {
+    var $text_field = context.$text_field = $( '<input type="text"></input>' ),
+        settings = context.settings;
+    if ( settings['copy-attributes-to-text-field'] ) {
+      var attrs = {};
+      var raw_attrs = context.$select_field[0].attributes;
+      for (var i=0; i < raw_attrs.length; i++) {
+        var key = raw_attrs[i].nodeName;
+        var value = raw_attrs[i].nodeValue;
+        if ( key !== 'name' && key !== 'id' && typeof context.$select_field.attr(key) !== 'undefined' ) {
+          attrs[key] = value;
+        }
+      };
+      $text_field.attr( attrs );
+    }
+    $text_field.blur(function() {
+      var valid_values = context.$select_field.find('option').map(function(i, option) { return $(option).text(); });
+      if ( ($.inArray($text_field.val(), valid_values) < 0) && typeof settings['handle_invalid_input'] === 'function' ) {
+        settings['handle_invalid_input'](context);
       }
-      $text_field.blur(function() {
-        var valid_values = context.$select_field.find('option').map(function(i, option) { return $(option).text(); });
-        if ( ($.inArray($text_field.val(), valid_values) < 0) && typeof settings['handle_invalid_input'] === 'function' ) {
-          settings['handle_invalid_input'](context);
-        }
-      });
-      // give the input box the ability to select all text on mouse click
-      if ( context.settings['autoselect'] ) {
-         $text_field.click( function() {
-             this.select();
-            });
+    });
+    // give the input box the ability to select all text on mouse click
+    if ( context.settings['autoselect'] ) {
+       $text_field.click( function() {
+           this.select();
+          });
+    }
+
+    context.settings.handle_invalid_input(context).insertAfter( context.$select_field );
+
+  };
+
+
+  /*
+
+    function extract_options
+
+    Indicates how options should be extracted from `select` field.
+
+  */
+
+  defaults.extract_options = function( context ) {
+    var options = [];
+    var $options = context.$select_field.find('option');
+    var number_of_options = $options.length;
+    var settings = context.settings;
+
+    // go over each option in the select tag
+    $options.each(function(){
+      var $option = $(this);
+      var option = {
+        'real-value': $option.attr('value'),
+        'label': $option.text()
       }
-
-      context.settings.handle_invalid_input(context).insertAfter( context.$select_field );
-
-    };
-
-
-    /*
-
-      function extract_options
-
-      Indicates how options should be extracted from `select` field.
-
-    */
-
-    defaults.extract_options = function( context ) {
-      var options = [];
-      var $options = context.$select_field.find('option');
-      var number_of_options = $options.length;
-      var settings = context.settings;
-
-      // go over each option in the select tag
-      $options.each(function(){
-        var $option = $(this);
-        var option = {
-          'real-value': $option.attr('value'),
-          'label': $option.text()
+      if ( settings['remove-valueless-options'] && option['real-value'] === '') {
+        // skip options without a value
+      } else {
+        // prepare the 'matches' string which must be filtered on later
+        option['matches'] = option['label'];
+        var alternative_spellings = $option.attr( settings['alternative-spellings-attr'] );
+        if ( alternative_spellings ) {
+          option['matches'] += ' ' + alternative_spellings;
         }
-        if ( settings['remove-valueless-options'] && option['real-value'] === '') {
-          // skip options without a value
-        } else {
-          // prepare the 'matches' string which must be filtered on later
-          option['matches'] = option['label'];
-          var alternative_spellings = $option.attr( settings['alternative-spellings-attr'] );
-          if ( alternative_spellings ) {
-            option['matches'] += ' ' + alternative_spellings;
+        // give each option a weight paramter for sorting
+        if ( settings['sort'] ) {
+          var weight = parseInt( $option.attr( settings['sort-attr'] ), 10 );
+          if ( weight ) {
+            option['weight'] = weight;
+          } else {
+            option['weight'] = number_of_options;
           }
-          // give each option a weight paramter for sorting
-          if ( settings['sort'] ) {
-            var weight = parseInt( $option.attr( settings['sort-attr'] ), 10 );
-            if ( weight ) {
-              option['weight'] = weight;
-            } else {
-              option['weight'] = number_of_options;
-            }
-          }
-          // add relevancy score
-          if ( settings['relevancy-sorting'] ) {
-            option['relevancy-score'] = 0;
-            option['relevancy-score-booster'] = 1;
-            var boost_by = parseFloat( $option.attr( settings['relevancy-sorting-booster-attr'] ) );
-            if ( boost_by ) {
-              option['relevancy-score-booster'] = boost_by;
-            }
-          }
-          // add option to combined array
-          options.push( option );
         }
-      });
-      // sort the options based on weight
-      if ( settings['sort'] ) {
-        if ( settings['sort-desc'] ) {
-          options.sort( function( a, b ) { return b['weight'] - a['weight']; } );
-        } else {
-          options.sort( function( a, b ) { return a['weight'] - b['weight']; } );
+        // add relevancy score
+        if ( settings['relevancy-sorting'] ) {
+          option['relevancy-score'] = 0;
+          option['relevancy-score-booster'] = 1;
+          var boost_by = parseFloat( $option.attr( settings['relevancy-sorting-booster-attr'] ) );
+          if ( boost_by ) {
+            option['relevancy-score-booster'] = boost_by;
+          }
         }
+        // add option to combined array
+        options.push( option );
       }
+    });
+    // sort the options based on weight
+    if ( settings['sort'] ) {
+      if ( settings['sort-desc'] ) {
+        options.sort( function( a, b ) { return b['weight'] - a['weight']; } );
+      } else {
+        options.sort( function( a, b ) { return a['weight'] - b['weight']; } );
+      }
+    }
 
-      // return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
-      return options;
+    // return the set of options, each with the following attributes: real-value, label, matches, weight (optional)
+    return options;
 
-    };
+  };
 
 
 
