@@ -47,6 +47,7 @@
     'alternative-spellings-attr'            : 'data-alternative-spellings',
     'remove-valueless-options'              : false,
     'copy-attributes-to-text-field'         : true,
+    'ignore-disabled'                       : true,
     'autocomplete-plugin'                   : 'jquery_ui',
     'relevancy-sorting'                     : true,
     'relevancy-sorting-partial-match-value' : 1,
@@ -69,7 +70,6 @@
   */
 
   defaults.handle_invalid_input = function( context ) {
-    var sel = 'option:selected' + (context.settings['remove-valueless-options'] ? '[value!=""]' : '');
     return context.$text_field.val(context.$select_field.find(sel).first().text());
   };
 
@@ -140,7 +140,7 @@
   defaults.extract_options = function( context ) {
 
     var options = [],
-        $options = context.$select_field.find('option'),
+        $options = context.$select_field.find(context.settings['ignore-disabled'] ? 'option:enabled' : 'option'),
         number_of_options = $options.length,
         settings = context.settings;
 
