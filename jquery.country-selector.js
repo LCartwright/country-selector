@@ -39,25 +39,25 @@
   */
 
   var defaults = {
-    'sort'                                  : false,
-    'sort-attr'                             : 'data-priority',
-    'sort-desc'                             : false,
-    'autoselect'                            : true,
     'alternative-spellings'                 : true,
     'alternative-spellings-attr'            : 'data-alternative-spellings',
-    'remove-valueless-options'              : false,
-    'copy-attributes-to-text-field'         : true,
-    'ignore-disabled'                       : true,
     'autocomplete-plugin'                   : 'jquery_ui',
+    'autoFocus'                             : true,
+    'autoselect'                            : true,
+    'copy-attributes-to-text-field'         : true,
+    'delay'                                 : 0,
+    'ignore-disabled'                       : true,
+    'intl-sensitivity'                      : 'base',
+    'locale'                                : 'en',
+    'minLength'                             : 0,
     'relevancy-sorting'                     : true,
+    'relevancy-sorting-booster-attr'        : 'data-relevancy-booster',
     'relevancy-sorting-partial-match-value' : 1,
     'relevancy-sorting-strict-match-value'  : 5,
-    'relevancy-sorting-booster-attr'        : 'data-relevancy-booster',
-    'minLength'                             : 0,
-    'locale'                                : 'en',
-    'intl-sensitivity'                      : 'base',
-    'delay'                                 : 0,
-    'autoFocus'                             : true
+    'remove-valueless-options'              : false,
+    'sort'                                  : false,
+    'sort-attr'                             : 'data-priority',
+    'sort-desc'                             : false
   };
 
 
@@ -70,6 +70,7 @@
   */
 
   defaults.handle_invalid_input = function( context ) {
+    var sel = 'option:selected' + (context.settings['ignore-disabled'] ? ':enabled' : '') + (context.settings['remove-valueless-options'] ? '[value!=""]' : '');
     return context.$text_field.val(context.$select_field.find(sel).first().text());
   };
 
