@@ -1,6 +1,8 @@
-## Select To Autocomplete: Redesigned Country Selector
+## Select To Autocomplete:
 
-This is a fork of Baymard's redesigned country selector. The intent is to make the code more readable, linted, better documented, faster and up-to-date.
+This is a fork of brandoncarl/country-selector which itself is an updated fork of JamieAppleseed/selectToAutocomplete
+
+The intent is to make the code more readable, linted, better documented, faster and up-to-date.
 
 This fork has not yet been tested. Please do so before using, and feel free to report back the results.
 
@@ -21,3 +23,7 @@ http://uxdesign.smashingmagazine.com/2011/11/10/redesigning-the-country-selector
 
 - Try the demo
 http://baymard.com/labs/country-selector
+
+### Versions
+* jQuery v1.12.4
+* jQuery UI v1.12.0
