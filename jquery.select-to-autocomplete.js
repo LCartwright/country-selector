@@ -386,14 +386,6 @@
         },
         change: function( event, ui ) {
           update_select_value( ui.item );
-        },
-        open: function( event, ui ) {
-          var margin, $ac = $(".ui-autocomplete");
-
-          // Autocomplete is not in right position on IE9. We must change the margin manually.
-          if ("undefined" === typeof targetTop) targetTop = context.$text_field.offset().top + context.$text_field.outerHeight();
-          if ((margin = targetTop - $ac.offset().top) != 0)
-            $ac.css("top", "+="  + margin + "px");
         }
       });
       // Force refresh value of select field when form is submitted
