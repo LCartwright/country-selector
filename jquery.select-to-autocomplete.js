@@ -1,12 +1,14 @@
 /*
 
-  Version: 1.1.1 (FORK)
+  Version: 1.2.0 (FORK)
 
   Documentation: http://baymard.com/labs/country-selector#documentation
 
   Copyright (C) 2011 by Jamie Appleseed, Baymard Institute (baymard.com)
 
   Edited by Brandon Carl to increase readability, speed, and improve syntax.
+
+  Edited by Laurence Cartwright for fixes and updates to used libraries.
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
